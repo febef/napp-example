@@ -1,0 +1,8 @@
+#! /usr/bin/env node
+
+const napp = require('n-app');
+const config = require('../etc');
+
+const app = new napp({...config,...config.napp});
+
+app.run();
