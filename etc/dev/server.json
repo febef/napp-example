@@ -1,0 +1,23 @@
+{
+  "session": {
+    "secret": "shh!@#$%34!cr",
+    "resave": true,
+    "saveUninitialized": true
+  },
+  "mongoStore": {
+    "collection": "clientsessions",
+    "stringify": false,
+    "autoReconnect": true,
+    "ttl": 7200
+  },
+  "bodyparser": {
+    "extended": true,
+    "limit": "100mb"
+  },
+  "passport": {
+    "key": "connect.sid",
+    "secret": "shh!@#$%34!cr"
+  },
+  "morgan" : "dev",
+  "port" : 3000
+}

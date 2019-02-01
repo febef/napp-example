@@ -1,0 +1,5 @@
+{
+  "SALT_WORK_FACTOR": 10,
+  "MAX_LOGIN_ATTEMPS": 20,
+  "LOCK_TIME": 10
+}

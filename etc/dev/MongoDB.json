@@ -1,0 +1,7 @@
+{
+  "url" : "mongodb://localhost/sCoretest",
+  "params" : {
+    "useNewUrlParser": true,
+    "autoIndex": false
+  }
+}
