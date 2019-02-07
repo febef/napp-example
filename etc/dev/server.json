@@ -19,5 +19,8 @@
     "secret": "shh!@#$%34!cr"
   },
   "morgan" : "dev",
+  "mongodb" : true,
+  "passport" : true,
+  "socketio" : true,
   "port" : 3000
 }
