@@ -73,7 +73,7 @@ class WebApp extends nappComponent {
   }
 
   notFoundError(req) {
-    let menssage = "sCore can't get: " + JSON.stringify(req.event.id);
+    let menssage = "can't get: " + JSON.stringify(req.event.id);
     req.event.taked = true;
     if (req.rest && !req.res.headerSent)
       req.rest.res.status(404).send(menssage);
