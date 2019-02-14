@@ -18,6 +18,14 @@
     "key": "connect.sid",
     "secret": "shh!@#$%34!cr"
   },
+  "events" : {
+    "wildcard": true,
+    "delimiter": "/",
+    "newListener": false,
+    "maxListeners": 50,
+    "verboseMemoryLeak": false,
+    "priorityAll": true
+  },
   "morgan" : "dev",
   "mongodb" : true,
   "passport" : true,
