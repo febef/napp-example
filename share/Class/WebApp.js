@@ -15,10 +15,10 @@ class WebApp extends nappComponent {
   }
 
   _on(eventName, callback, addend=true) {
-    // if rest
     let rest = (eventName.slice(0, 4) === 'rest');
     let route = {};
     let ifparams = false;
+    // if rest
     if (rest) {
       let sRoute = eventName.slice(4);
       // regexpr match if url params
@@ -47,34 +47,32 @@ class WebApp extends nappComponent {
         req.data['params'] = {};
         req.baseUrl = route.baseUrl;
 
-        //let argumentIndex = 1;
-
-        for (let i = 0, argumentIndex = 1; i < route.parts.length; i++) {
+        for (let i = 0, argIdx = 1; i < route.parts.length; i++) {
           if (route.parts[i].name) {
-            req.data['params'][route.parts[i].name] = pfields[argumentIndex];
-            argumentIndex ++;
+            req.data['params'][route.parts[i].name] = pfields[argIdx];
+            argIdx ++;
           }
         }
       }
 
       if (!req.event.taked) {
         req.event.taked = true;
+
         req['next'] = () => {
           req.event.taked = false;
           this.e.emit(req.event._next, req);
         };
+
         if ((ifparams && JSON.stringify(req.getData()) !== "{}") || !ifparams)
           if (!this.approbedSecurity(req)) this.notHavePermissions(req);
           else callback(req);
-        else {
+        else
           this.notFoundError(req);
-        }
       }
     });
   }
 
   run() {
-
     this.e.on("**" , (req) => { setTimeout(() => {
         if (!req.event.taked) {
           this.notFoundError(req);
@@ -86,7 +84,6 @@ class WebApp extends nappComponent {
   }
 
   approbedSecurity(req) {
-
     return true;
   }
 
