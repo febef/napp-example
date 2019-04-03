@@ -9,16 +9,31 @@ class WebApp extends nappComponent {
     this.routes = {};
   }
 
+  errorTemplate (menssage="Error unrecognizable.") {
+    return `
+      <!DOCTYPE html>
+      <html lang="en">
+        <head>
+          <meta charset="utf-8">
+          <title>Error</title>
+        </head>
+        <body>
+          <pre>${menssage}</pre>
+        </body>
+      </html>
+    `;
+  }
+
   on(eventName, callback) {
     this._on(eventName, callback);
     this._on(eventName, callback, false);
   }
 
   _on(eventName, callback, addend=true) {
-    // if rest
     let rest = (eventName.slice(0, 4) === 'rest');
     let route = {};
     let ifparams = false;
+    // if rest
     if (rest) {
       let sRoute = eventName.slice(4);
       // regexpr match if url params
@@ -46,8 +61,6 @@ class WebApp extends nappComponent {
       if (rest && pfields) {
         req.data['params'] = {};
         req.baseUrl = route.baseUrl;
-
-        //let argumentIndex = 1;
 
         for (let i = 0, argumentIndex = 1; i < route.parts.length; i++) {
           if (route.parts[i].name) {
@@ -94,18 +107,7 @@ class WebApp extends nappComponent {
     let menssage = "Cannot GET " + JSON.stringify(req.event.id);
     req.event.taked = true;
     if (req.rest && !req.res.headerSent)
-      req.rest.res.status(404).send(`
-        <!DOCTYPE html>
-        <html lang="en">
-          <head>
-            <meta charset="utf-8">
-            <title>Error</title>
-          </head>
-          <body>
-            <pre>${menssage}</pre>
-          </body>
-        </html>
-      `);
+      req.rest.res.status(404).send(this.errorTemplate(menssage));
     else
       req.res(menssage);
   }
@@ -114,18 +116,7 @@ class WebApp extends nappComponent {
     let menssage = "You do not have permissions for " + JSON.stringify(req.event.id);
     req.event.taked = true;
     if (req.rest && !req.res.headerSent)
-      req.rest.res.status(401).send(`
-          <!DOCTYPE html>
-          <html lang="en">
-            <head>
-              <meta charset="utf-8">
-              <title>Error</title>
-            </head>
-            <body>
-              <pre>${menssage}</pre>
-            </body>
-          </html>
-        `);
+      req.rest.res.status(401).send(this.errorTemplate(menssage));
     else
       req.res(menssage);
   }
