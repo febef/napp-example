@@ -9,6 +9,21 @@ class WebApp extends nappComponent {
     this.routes = {};
   }
 
+  errorTemplate (menssage="Error unrecognizable.") {
+    return `
+      <!DOCTYPE html>
+      <html lang="en">
+        <head>
+          <meta charset="utf-8">
+          <title>Error</title>
+        </head>
+        <body>
+          <pre>${menssage}</pre>
+        </body>
+      </html>
+    `;
+  }
+
   on(eventName, callback) {
     this._on(eventName, callback);
     this._on(eventName, callback, false);
@@ -91,18 +106,7 @@ class WebApp extends nappComponent {
     let menssage = "Cannot GET " + JSON.stringify(req.event.id);
     req.event.taked = true;
     if (req.rest && !req.res.headerSent)
-      req.rest.res.status(404).send(`
-        <!DOCTYPE html>
-        <html lang="en">
-          <head>
-            <meta charset="utf-8">
-            <title>Error</title>
-          </head>
-          <body>
-            <pre>${menssage}</pre>
-          </body>
-        </html>
-      `);
+      req.rest.res.status(404).send(this.errorTemplate(menssage));
     else
       req.res(menssage);
   }
@@ -111,18 +115,7 @@ class WebApp extends nappComponent {
     let menssage = "You do not have permissions for " + JSON.stringify(req.event.id);
     req.event.taked = true;
     if (req.rest && !req.res.headerSent)
-      req.rest.res.status(401).send(`
-          <!DOCTYPE html>
-          <html lang="en">
-            <head>
-              <meta charset="utf-8">
-              <title>Error</title>
-            </head>
-            <body>
-              <pre>${menssage}</pre>
-            </body>
-          </html>
-        `);
+      req.rest.res.status(401).send(this.errorTemplate(menssage));
     else
       req.res(menssage);
   }
