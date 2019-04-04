@@ -70,11 +70,13 @@ class WebApp extends nappComponent {
         }
       }
 
-      if (!req.event.taked) {
-        req.event.taked = true;
+      if (req.event.taked != this) {
+        req.event.taked = this;
 
+        if (req.next!=false)
         req['next'] = () => {
           req.event.taked = false;
+          req.next = false;
           this.e.emit(req.event._next, req);
         };
 
@@ -95,7 +97,12 @@ class WebApp extends nappComponent {
       }, 0);
     });
 
+
     this.events();
+  }
+
+  continue(req){
+    if (req.next && !req.taked) req.next(req);
   }
 
   approbedSecurity(req) {
