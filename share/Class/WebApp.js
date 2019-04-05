@@ -73,10 +73,8 @@ class WebApp extends nappComponent {
       if (req.event.taked != this) {
         req.event.taked = this;
 
-        if (req.next!=false)
         req['next'] = () => {
           req.event.taked = false;
-          req.next = false;
           this.e.emit(req.event._next, req);
         };
 
@@ -97,12 +95,11 @@ class WebApp extends nappComponent {
       }, 0);
     });
 
-
     this.events();
   }
 
   continue(req){
-    if (req.next && !req.taked) req.next(req);
+    if(req.next && !req.taked) req.next();
   }
 
   approbedSecurity(req) {
@@ -110,26 +107,26 @@ class WebApp extends nappComponent {
   }
 
   notFoundError(req) {
-    try {
-      let menssage = "Cannot GET " + JSON.stringify(req.event.id);
-      if (req.rest && !req.res.headerSent ) {
-        req.event.taked = this;
+    let menssage = "Cannot GET " + JSON.stringify(req.event.id);
+    req.event.taked = this;
+    if (req.rest && !req.res.headerSent)
+      try {
         req.rest.res.status(404).send(this.errorTemplate(menssage));
-      } else
+      } catch (e) {
+        //req.rest.res.status(200);
+      } finally {
+
+      }
+    else
       req.res(menssage);
-    } catch (e) {
-
-    } finally {
-
-    }
   }
 
   notHavePermissions(req) {
     let menssage = "You do not have permissions for " + JSON.stringify(req.event.id);
-    if (req.rest && !req.res.headerSent ) {
-      req.event.taked = this;
+    req.event.taked = true;
+    if (req.rest && !req.res.headerSent)
       req.rest.res.status(401).send(this.errorTemplate(menssage));
-    } else
+    else
       req.res(menssage);
   }
 
